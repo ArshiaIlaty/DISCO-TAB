@@ -1,0 +1,13 @@
+torch
+transformers
+scikit-learn
+scipy
+pandas
+numpy
+ucimlrepo
+scikit-posthocs
+seaborn
+matplotlib
+sdmetrics
+SurvSet
+# baselines (isolated envs recommended): sdv, synthcity, be-great, realtabformer

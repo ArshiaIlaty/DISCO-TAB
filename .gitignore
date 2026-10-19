@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.hf_cache/
+data_raw/
+synthetic/
+models/
+logs/
+*.log
