@@ -1,8 +1,9 @@
-__pycache__/
+*.log
 *.pyc
 .hf_cache/
+__pycache__/
 data_raw/
-synthetic/
-models/
 logs/
-*.log
+models/
+notify.env
+synthetic/
