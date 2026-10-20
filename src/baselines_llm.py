@@ -60,9 +60,14 @@ def gen_great(train, n, epochs, device):
 
 
 def gen_realtabformer(train, n, epochs, device):
+    # torch>=2.6 defaults torch.load(weights_only=True), which rejects
+    # REaLTabFormer's own checkpoint pickles. We trust our checkpoints -> force False.
+    import torch
+    _orig_load = torch.load
+    torch.load = lambda *a, **k: _orig_load(*a, **{**k, "weights_only": False})
     from realtabformer import REaLTabFormer
     m = REaLTabFormer(model_type="tabular", epochs=epochs, batch_size=16,
-                      checkpoints_dir="/tmp/rtf_tmp", samples_save_path="/tmp/rtf_s")
+                      checkpoints_dir="/tmp/rtf_tmp", samples_save_dir="/tmp/rtf_s")
     m.fit(train, device=device, num_bootstrap=10)
     return m.sample(n_samples=n, device=device)
 
