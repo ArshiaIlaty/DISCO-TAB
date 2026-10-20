@@ -1,6 +1,6 @@
 # DISCO-TAB — Comprehensive Benchmark (all models × datasets × metrics)
 
-_857 runs | 13 models | 24 datasets | mean over up to 3 seeds. Generated 2026-10-20 15:40._
+_857 runs | 13 models | 24 datasets | mean over up to 3 seeds. Generated 2026-10-20 15:41._
 
 Models: DISCO-TAB, CTGAN, TVAE, GaussCop, TabDDPM, ADS-GAN, PATE-GAN, RTVAE, NFlow, ARF, BayesNet, Marginals, GReaT
 
