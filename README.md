@@ -7,7 +7,10 @@ to synthesize high-fidelity, clinically-constrained tabular data.
 
 This repository contains the full, reproducible pipeline and benchmark used in the
 paper *"DISCO-TAB: A Hierarchical Reinforcement Learning Framework for Clinically
-Constrained Tabular Data Synthesis"* (under review, IEEE JBHI).
+Constrained Tabular Data Synthesis"* (under review).
+
+📄 **Paper:** preprint link to be added here upon release.
+💻 **Code & data:** this repository — <https://github.com/ArshiaIlaty/DISCO-TAB>
 
 ---
 
@@ -82,8 +85,8 @@ parameter-efficient (<6 GB VRAM) and runs on consumer GPUs.
   title   = {DISCO-TAB: A Hierarchical Reinforcement Learning Framework for
              Clinically Constrained Tabular Data Synthesis},
   author  = {Ilaty, Arshia and others},
-  journal = {IEEE Journal of Biomedical and Health Informatics (under review)},
-  year    = {2026}
+  year    = {2026},
+  note    = {Under review. Code: \url{https://github.com/ArshiaIlaty/DISCO-TAB}}
 }
 ```
 

@@ -13,20 +13,36 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "tables", "comprehensive")
 LONG = os.path.join(OUT, "long.csv")
 
+# ARF + Bayesian network dropped; FAITH dropped (authors' revision choices).
 MODELS = ["disco", "ctgan", "tvae", "gaussian_copula", "tabddpm", "adsgan",
-          "pategan", "rtvae", "nflow", "arf", "bayesian_network", "marginal",
-          "great", "realtabformer"]
+          "pategan", "rtvae", "nflow", "marginal",
+          "great", "realtabformer", "taegan", "tagal", "tabsyn"]
 MLAB = {"disco": "DISCO-TAB", "ctgan": "CTGAN", "tvae": "TVAE",
         "gaussian_copula": "GaussCop", "tabddpm": "TabDDPM", "adsgan": "ADS-GAN",
-        "pategan": "PATE-GAN", "rtvae": "RTVAE", "nflow": "NFlow", "arf": "ARF",
-        "bayesian_network": "BayesNet", "marginal": "Marginals",
-        "great": "GReaT", "realtabformer": "RealTabF"}
+        "pategan": "PATE-GAN", "rtvae": "RTVAE", "nflow": "NFlow",
+        "marginal": "Marginals",
+        "great": "GReaT", "realtabformer": "RealTabF", "tabsyn": "TabSyn",
+        "taegan": "TAEGAN", "tagal": "TAGAL"}
 DS_ORDER = ["heart_failure", "breast_cancer", "liver_disorders", "parkinsons",
             "obesity", "diabetes", "german_credit", "bank_marketing", "census_income",
             "surv_melanoma", "surv_pbc", "surv_pbc3", "surv_retinopathy",
             "surv_whas500", "surv_gbsg2", "surv_colon", "surv_grace", "surv_trace",
-            "surv_framingham", "tab_blood_transfusion", "tab_credit_g",
+            "surv_framingham", "tab_blood_transfusion",
             "tab_qsar_biodeg", "tab_maternal_risk", "tab_website_phishing"]
+# Clean display names: drop surv_/tab_ provenance prefixes for the paper.
+DISPLAY = {
+    "heart_failure": "Heart Failure", "breast_cancer": "Breast Cancer",
+    "liver_disorders": "Liver Disorders", "parkinsons": "Parkinsons",
+    "obesity": "Obesity", "diabetes": "Diabetes", "german_credit": "German Credit",
+    "bank_marketing": "Bank Marketing", "census_income": "Census Income",
+    "surv_melanoma": "Melanoma", "surv_pbc": "PBC", "surv_pbc3": "PBC3",
+    "surv_retinopathy": "Retinopathy", "surv_whas500": "WHAS500",
+    "surv_gbsg2": "GBSG2", "surv_colon": "Colon", "surv_grace": "GRACE",
+    "surv_trace": "TRACE", "surv_framingham": "Framingham",
+    "tab_blood_transfusion": "Blood Transfusion",
+    "tab_qsar_biodeg": "QSAR Biodeg", "tab_maternal_risk": "Maternal Risk",
+    "tab_website_phishing": "Website Phishing",
+}
 METRICS = [
     ("tstr_f1_macro", True, "Utility (downstream TSTR)", "TSTR F1-macro ($\\uparrow$)"),
     ("tstr_f1_weighted", True, "Utility (downstream TSTR)", "TSTR F1-weighted ($\\uparrow$)"),
@@ -37,7 +53,6 @@ METRICS = [
     ("fid_Hellinger", False, "Statistical fidelity", "Hellinger ($\\downarrow$)"),
     ("fid_Pearson", True, "Statistical fidelity", "Pearson corr.\\ preservation ($\\uparrow$)"),
     ("fid_JS_num", False, "Statistical fidelity", "JS numeric ($\\downarrow$)"),
-    ("fid_JS_cat", False, "Statistical fidelity", "JS categorical ($\\downarrow$)"),
     ("dcr_median", True, "Privacy / disclosure", "DCR median ($\\uparrow$=less memorization)"),
     ("dcr_realreal_median", None, "Privacy / disclosure", "DCR real--real reference"),
     ("ext_dcr", True, "Privacy / disclosure", "DCR encoded ($\\uparrow$)"),
@@ -57,12 +72,6 @@ METRICS = [
     ("ext_sdm_quality", True, "SDMetrics quality report", "Overall quality ($\\uparrow$)"),
     ("ext_sdm_shapes", True, "SDMetrics quality report", "Column shapes ($\\uparrow$)"),
     ("ext_sdm_pairs", True, "SDMetrics quality report", "Column-pair trends ($\\uparrow$)"),
-    ("faith_FAITH", True, "FAITH framework", "FAITH overall ($\\uparrow$)"),
-    ("faith_Factuality", True, "FAITH framework", "Factuality ($\\uparrow$)"),
-    ("faith_Alignment", True, "FAITH framework", "Alignment ($\\uparrow$)"),
-    ("faith_Integrity", True, "FAITH framework", "Integrity ($\\uparrow$)"),
-    ("faith_Tracking", True, "FAITH framework", "Tracking ($\\uparrow$)"),
-    ("valid_rate", True, "Other", "Parse valid-rate ($\\uparrow$)"),
 ]
 
 
@@ -102,7 +111,7 @@ def table_tex(df, metric, hib, label):
         mv = meanP.loc[ds, cols]
         valid = mv.dropna()
         best = (valid.max() if hib else valid.min()) if (hib is not None and len(valid)) else None
-        cells = [esc(ds)]
+        cells = [esc(DISPLAY.get(ds, ds))]
         for m in cols:
             v = mv[m]
             if pd.isna(v):

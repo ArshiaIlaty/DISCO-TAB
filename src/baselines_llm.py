@@ -86,6 +86,11 @@ def run_one(ds, model, seed):
     out = os.path.join(OUTDIR, f"{ds}__{model}__seed{seed}.csv")
     syn.to_csv(out, index=False)
     print(f"[OK] {ds} {model} seed{seed} -> {syn.shape}", flush=True)
+    # Free the /tmp (RAM-backed tmpfs!) checkpoint/sample dirs so finished runs
+    # don't keep occupying memory (these accumulated to 12 GB before).
+    import shutil
+    for d in ("/tmp/great_tmp", "/tmp/rtf_tmp", "/tmp/rtf_s"):
+        shutil.rmtree(d, ignore_errors=True)
 
 
 def main():
